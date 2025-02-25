@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Lanes from "@/components/Lanes";
 import Image from "next/image";
+import { apiRes } from "./response";
 
 function Home() {
   const [selectedTime, setSelectedTime] = useState("17:00");
@@ -12,6 +13,21 @@ function Home() {
   );
   const [lanes, setLanes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (selectedBooth && selectedTime) {
+      setLoading(true);
+
+      setTimeout(() => {
+        //Generate random ID between 1 to 10,
+        const id = Math.floor(Math.random() * 4) + 1;
+
+        setLanes(apiRes[id]);
+
+        setLoading(false);
+      }, 2000);
+    }
+  }, [selectedBooth, selectedTime]);
 
   const onChangeSelectTime = (event) => {
     setSelectedTime(event.target.value);
